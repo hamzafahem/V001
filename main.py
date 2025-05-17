@@ -26,10 +26,11 @@ from database.db_manager import create_db_and_tables
 # Ensure directories exist
 os.makedirs(settings.upload_folder, exist_ok=True)
 os.makedirs(settings.image.storage_path, exist_ok=True)
+os.makedirs("templates", exist_ok=True)
 
 # Create FastAPI app
 app = FastAPI(
-    title=settings.app_name,
+    title=settings.APP_NAME,
     description="Service for scraping product information based on EAN codes",
     version="1.0.0",
     docs_url="/docs",
@@ -56,10 +57,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Include routers
-app.include_router(scraper_router.router, prefix=settings.api_prefix)
-app.include_router(upload_router.router, prefix=settings.api_prefix)
-app.include_router(export_router.router, prefix=settings.api_prefix)
-app.include_router(health_router.router, prefix=settings.api_prefix)
+app.include_router(scraper_router, prefix=settings.API_PREFIX)
+app.include_router(upload_router, prefix=settings.API_PREFIX)
+app.include_router(export_router, prefix=settings.API_PREFIX)
+app.include_router(health_router, prefix=settings.API_PREFIX)
 
 @app.on_event("startup")
 async def on_startup():
@@ -68,7 +69,12 @@ async def on_startup():
 
 @app.get("/")
 async def root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "app_name": settings.APP_NAME}
+    )
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=settings.debug)
+    # Ensure we're in the correct directory
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=settings.DEBUG)

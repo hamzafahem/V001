@@ -44,8 +44,8 @@ class CelioScraper(BaseScraper):
                 async with session.get(
                     self.site_config["base_url"], 
                     params=params, 
-                    headers=settings.headers,
-                    timeout=settings.request_timeout
+                    headers=settings.scraper.headers,
+                    timeout=settings.scraper.request_timeout
                 ) as response:
                     if response.status != 200:
                         logger.warning(f"Statut de réponse non 200: {response.status}")

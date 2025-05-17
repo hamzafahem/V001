@@ -5,7 +5,7 @@ from services.image_service import image_service
 from database.repositories.product_repository import product_repository
 #from api.dependencies import get_current_user
 
-router = APIRouter(prefix="/images", tags=["images"])
+router = APIRouter(prefix="/upload", tags=["upload"])
 
 @router.post("/{ean}")
 async def upload_image(
@@ -21,9 +21,11 @@ async def upload_image(
         raise HTTPException(status_code=404, detail="Product not found")
     
     # Upload image
-    filepath = await image_service.upload_product_image(ean, file, product.dict())
-    
-    return {"success": True, "filepath": filepath}
+    try:
+        result = await image_service.upload_product_image(ean, file)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/{ean}")
 async def get_product_images(

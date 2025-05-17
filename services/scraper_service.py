@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 
 from config.settings import settings
-#from database.repositories.product_repository import product_repository
+from database.repositories.product_repository import product_repository
 from scraper.base.scraper_factory import scraper_factory
 from scraper.sites.site_registry import get_all_sites
 from services.image_service import image_service

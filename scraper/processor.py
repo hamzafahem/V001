@@ -39,7 +39,7 @@ class ScraperProcessor:
         
         # Essayer CELIO d'abord
         celio_found = False
-        for site_config in settings.celio_sites:
+        for site_config in settings.scraper.celio_sites:
             celio_scraper = scraper_factory.get_scraper("celio", site_config)
             celio_result = await celio_scraper.scrape_ean(ean, brand)
             
@@ -52,7 +52,7 @@ class ScraperProcessor:
         if not celio_found:
             logger.info(f"EAN {ean} non trouvé sur CELIO, essai avec Modov...")
             
-            for domain_info in settings.modov_domains:
+            for domain_info in settings.scraper.modov_domains:
                 modov_scraper = scraper_factory.get_scraper("modov", domain_info)
                 modov_result = await modov_scraper.scrape_ean(ean, brand)
                 

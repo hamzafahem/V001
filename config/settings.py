@@ -63,13 +63,29 @@ class Settings:
         return type("ScraperSettings", (), {
             "celio_sites": self.CELIO_SITES,
             "modov_domains": self.MODOV_DOMAINS,
-            "request_timeout": self.REQUEST_TIMEOUT
+            "request_timeout": self.REQUEST_TIMEOUT,
+            "headers": self.HEADERS
         })
     
     @property
     def database_url(self):
         """Pour compatibilité avec le code existant"""
         return self.DATABASE_URL
+    
+    @property
+    def upload_folder(self):
+        """Pour compatibilité avec le code existant"""
+        return self.UPLOAD_FOLDER
+    
+    @property
+    def headers(self):
+        """Pour compatibilité avec le code existant"""
+        return self.HEADERS
+    
+    @property
+    def request_timeout(self):
+        """Pour compatibilité avec le code existant"""
+        return self.REQUEST_TIMEOUT
 
 # Charger les variables d'environnement depuis .env si le fichier existe
 env_file = ".env"

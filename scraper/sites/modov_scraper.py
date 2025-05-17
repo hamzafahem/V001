@@ -57,8 +57,8 @@ class ModovScraper(BaseScraper):
             async with aiohttp.ClientSession() as session:
                 async with session.get(
                     url, 
-                    headers=settings.headers,
-                    timeout=settings.request_timeout
+                    headers=settings.scraper.headers,
+                    timeout=settings.scraper.request_timeout
                 ) as response:
                     if response.status != 200:
                         logger.warning(f"Statut de réponse non 200: {response.status}")
